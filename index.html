@@ -92,6 +92,7 @@
 			text.disabled=true;//reload the page and textarea should be disabled at frist time//
 			function playgame()
 			{
+				intialtime();
 				let random=Math.floor(Math.random()*words.length);
 				message.innerText=words[random];
 				let date=new Date();
@@ -171,14 +172,17 @@
 			
 
 		})
-		document.getElementById('btn1').addEventListener('click',function(){
-			
-			    clearInterval(set);
+			  function intialtime(){
 			    seconds=0;
 			    milliseconds=0;
 			    hours=0;
 			    minutes=0;
 			    document.getElementById("display").innerHTML="00:00:00:00";
+			}
+		document.getElementById('btn1').addEventListener('click',function(){
+			
+			    clearInterval(set);
+			   intialtime();
 			    message.innerText="";
 			    text.value="";
 			    song.pause();

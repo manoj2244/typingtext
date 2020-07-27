@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>typing speed test</title>
+		<link rel="stylesheet" href="">
+		<link rel="stylesheet" href="">
+		<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+				box-sizing: border-box;
+				font-family: 'Ubuntu', sans-serif;
+				
+			}
+			.container{
+				width: 100vw;
+				height: 100vh;
+				background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("typing.jpg") ;
+							
+				background-repeat: no-repeat;
+				background-position: center center;
+				background-size: cover;
+				opacity: 0.89;
+				position: relative;
+			}
+			.main-div{
+				font-size: 1.3rem;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				text-align: center;
+			}
+			.main-div h1{
+				color: white;
+				padding-bottom: 12px;
+				
+			}
+			.main-div h2{
+				color: #ef560d;
+				
+			}
+			textarea{
+				background-color: #444;
+				box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+				border-radius: 10px 10px 0px 0px;
+				border: 20px solid #2980b9;
+				color: white;
+				font-size: 1.3rem;
+			}
+			button{
+				padding: 10px 20px;
+				border-radius: 20px;
+				border: 5px solid #2980b9;
+				background-color: #ecf0f1;
+				font-size: 1rem;
+				cursor: pointer;
+				outline: none;
+			}
+			button:hover{
+				background-color: gray;
+			}
+			span{
+				margin-top: 12px;
+				margin-bottom: 12px;
+				color: white;
+				font-size: 2.2rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="main-div">
+				<h1>Welcome To Typing Speed Test&#9202;</h1>
+				<i><h2 id="heading2"></h2></i>
+				<textarea name="" id="text" cols="100" rows="10" placeholder="Type Above Words..."></textarea>
+				<span id="display">00:00:00:00</span>
+				<div><button id="btn">Start</button>
+				<button id="btn1">Reset</button></div>
+			</div>
+		</div>
+		<script>
+			const words=["Simply put, Git is a version control system that lets you manage and keep track of your source code history.","GitHub is a cloud-based hosting service that lets you manage Git repositories.","Serverless integration makes it easy to connect apps and develop event-driven workflows.","Almost before we knew it, we had left the ground."];
+			const message=document.getElementById('heading2');
+			const text=document.getElementById('text');
+			const button=document.getElementById('btn');
+			let starttime,endtime;
+			let song=new Audio();
+			text.disabled=true;//reload the page and textarea should be disabled at frist time//
+			function playgame()
+			{
+				let random=Math.floor(Math.random()*words.length);
+				message.innerText=words[random];
+				let date=new Date();
+				starttime=date.getTime();	
+				btn.innerText='Done';
+			}
+			function endplay()
+			{
+				let date=new Date();
+				endtime=date.getTime();
+				const tottime=(endtime-starttime)/1000;
+				let totword=text.value;
+				let wordcount=wordcounter(totword);
+				let speed= Math.round((wordcount/tottime)*60);
+				let result="your typying speed is "+speed+" words per minute";
+				result+=comparewords(message.innerText,totword);
+				message.innerText=result;
+			}
+			function comparewords(msg1,msg2)
+			{
+				let words1=msg1.split(" ");
+				let words2=msg2.split(" ");
+				let count=0;
+				words1.forEach( function(element, index) {
+					if(element==words2[index]){count++;}
+				});
+				let error=words1.length-count;
+				return " correct words is "+count+" out of "+words1.length+" with error "+error;
+			}
+				function wordcounter(string)
+				{
+					let res=string.split(" ").length;
+					return res;
+				}
+			button.addEventListener('click',function(){
+
+				if(this.innerText=='Start'){
+					text.disabled=false;
+					text.value="";
+					
+					song.src="background.mp3";
+					song.play();
+					playgame();
+				}
+				else if(this.innerText=="Done"){
+					text.disabled=true;
+					song.src="background.mp3";
+					song.pause();
+
+					endplay();
+					this.innerText="Start";
+				}
+			})
+		</script>
+		<script>
+			//stopwatch//
+			let seconds=0;
+			let milliseconds=0;
+			let minutes=0;
+			let hours=0
+			//dispaly in two digit form//
+			let dismillisecond=0;
+			let disseconds=0;
+			let disminutes=0;
+			let dishours=0;
+			let status="stopped";
+
+		document.getElementById('btn').addEventListener('click',function(){
+			if(status=="stopped"){
+			    set=setInterval(stopwatch, 10);
+			    status="started";
+			}
+			else{
+				window.clearInterval(set)
+				status="stopped";
+			}
+			
+
+		})
+		document.getElementById('btn1').addEventListener('click',function(){
+			
+			    clearInterval(set);
+			    seconds=0;
+			    milliseconds=0;
+			    hours=0;
+			    minutes=0;
+			    document.getElementById("display").innerHTML="00:00:00:00";
+
+			   
+			})
+
+
+		
+			function stopwatch(){
+				milliseconds++;
+				if(milliseconds==100){
+					milliseconds=0;
+					seconds++;
+					if(seconds==60){
+						seconds=0;
+						minutes++;
+						if(minutes==60){
+							minutes=0;
+							hours++;
+						}
+					}
+			}
+			if(milliseconds<10){
+				dismillisecond= "0"+ milliseconds.toString();
+			}
+			else
+				dismillisecond=milliseconds;
+			if (seconds<10) {
+				disseconds="0"+ seconds.toString();
+				
+			}
+			else
+				disseconds=seconds;
+			if (minutes<10) {
+				disminutes="0"+ minutes.toString();
+				
+			}
+			else
+				disminutes=minute;
+			if(hours<10)
+			{
+				dishours="0"+ hours.toString();
+			}
+			else
+				dishours=hours;
+				document.getElementById("display").innerHTML=dishours+":" + disminutes + ":" + disseconds + ":"+ dismillisecond;
+			}
+		</script>
+	</body>
+</html>
